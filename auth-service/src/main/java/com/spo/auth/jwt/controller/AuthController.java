@@ -1,6 +1,8 @@
 package com.spo.auth.jwt.controller;
 
 import com.spo.auth.jwt.dto.AuthUserDto;
+import com.spo.auth.jwt.dto.NewUserDto;
+import com.spo.auth.jwt.dto.RequestDto;
 import com.spo.auth.jwt.dto.TokenDto;
 import com.spo.auth.jwt.entity.AuthUser;
 import com.spo.auth.jwt.service.AuthService;
@@ -25,8 +27,8 @@ public class AuthController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<TokenDto> validate(@RequestParam String token) {
-        TokenDto tokenDto = authService.validateToken(token);
+    public ResponseEntity<TokenDto> validate(@RequestParam String token, @RequestBody RequestDto requestDto) {
+        TokenDto tokenDto = authService.validateToken(token, requestDto);
         if(tokenDto == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -35,8 +37,8 @@ public class AuthController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AuthUser> create(@RequestBody AuthUserDto authUserDto) {
-        AuthUser authUser = authService.save(authUserDto);
+    public ResponseEntity<AuthUser> create(@RequestBody NewUserDto dto) {
+        AuthUser authUser = authService.save(dto);
         if(authUser == null) {
             return ResponseEntity.badRequest().build();
         }
